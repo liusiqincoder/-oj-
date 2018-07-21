@@ -1,0 +1,63 @@
+刚开始就是想用dp解决，从左上到右下递增，再右下到左上递增，但下面这组数据就挂了
+         7,8,9
+				 9,7,6
+				 7,2,3
+输出为5，但是答案为6
+问题是在7，8，9这里，若是知道8之后的线段长度就行
+还是只能用dfs暴力解决
+刚开始用dp做的：
+public static int longestIncreasingPath(int[][] matrix) {
+    	if(matrix==null||matrix.length==0)
+    		return 0;
+    	int n=matrix.length,m=matrix[0].length,res=1;
+        int[][] route=new int[n][m];
+        for(int i=0;i<matrix.length;i++)
+        	Arrays.fill(route[i], 1);
+        
+        for(int i=1;i<m;i++) {
+        	if(matrix[0][i]>matrix[0][i-1])
+        		route[0][i]=route[0][i-1]+1;
+        	res=Math.max(res, route[0][i]);
+        }
+        
+        for(int i=1;i<n;i++) {
+        	if(matrix[i][0]>matrix[i-1][0])
+        		route[i][0]=route[i-1][0]+1;
+        	res=Math.max(res, route[i][0]);
+        }
+        
+        for(int i=1;i<n;i++)
+        	for(int j=1;j<m;j++) {
+        		if(matrix[i][j]>matrix[i][j-1])
+        			route[i][j]=route[i][j-1]+1;
+        		if(matrix[i][j]>matrix[i-1][j])
+        			route[i][j]=Math.max(route[i][j], route[i-1][j]+1);
+            	res=Math.max(res, route[i][j]);
+        	}
+        
+        for(int i=m-2;i>=0;i--) {
+        	if(matrix[n-1][i]>matrix[n-1][i+1])
+        		route[n-1][i]=Math.max(route[n-1][i], route[n-1][i+1]+1);
+        	res=Math.max(res, route[n-1][i]);
+        }
+        
+        for(int i=n-2;i>=0;i--) {
+        	if(matrix[i][m-1]>matrix[i+1][m-1])
+        		route[i][m-1]=Math.max(route[i][m-1],route[i+1][m-1]+1);
+        	res=Math.max(res, route[i][m-1]);
+        }
+        
+        for(int i=n-2;i>=0;i--)
+        	for(int j=m-2;j>=0;j--) {
+        		if(matrix[i][j]>matrix[i][j+1])
+        			route[i][j]=Math.max(route[i][j],route[i][j+1]+1);
+        		if(matrix[i][j]>matrix[i+1][j])
+        			route[i][j]=Math.max(route[i][j], route[i+1][j]+1);
+            	res=Math.max(res, route[i][j]);
+        	}
+        
+        return res;
+    }
+    
+    
+    
