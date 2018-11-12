@@ -83,4 +83,4 @@ public class Solution1010 {
 }
 ```
 
-![image](1.png)
+![image](https://github.com/liusiqincoder/-oj-/blob/master/hdu/picture/1010.png)
